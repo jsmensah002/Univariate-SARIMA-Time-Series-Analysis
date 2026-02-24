@@ -8,8 +8,19 @@ Method:
 - Model performance was assessed using Root Mean Squared Error (RMSE) for both the training and test sets.
 - Forecast results were then visualized alongside confidence intervals to illustrate prediction uncertainty.
 
+Criteria to meet:
+- p value from the ADF test < 0.05 (stationary)
+- Test RMSE should not be > 2x Train RMSE
+- Auto-Regression Lags < 0.05 (significant)
+- Auto-Regression Seasonal Lags < 0.05 (significant)
+- Moving Average Lags < 0.05 (significant)
+- Moving Average Seasonal Lags < 0.05 (significant)
+- (Ljung-Box Test) Prob(Q) > 0.05 (no autocorrelation)
+- (Jarque-Bera Test) Prob(JB) > 0.05 (normal distribution of residuals)
+- (Heteroskedasticity Test) Prob(H) > 0.05 (homoskedastic / non-heteroskedastic)
+
 SARIMA Results:
-- p value from the ADF test = 0.1862 (> 0.05, non-stationary)
+- Since the series was non-stationary (p value from the ADF test = 0.1862 (> 0.05, non-stationary)), differencing within the SARIMA framework was used to achieve stationarity.
 - The Auto-ARIMA selection process identified an initial SARIMA(1, 1, 3)(0, 1, 1)[12] model.
 - (Auto-Regression Lag1) AR.L1: p = 0.000 (< 0.05, significant)
 - (Moving Average Lag1) MA.L1: p = 0.000 (< 0.05, significant)
@@ -32,10 +43,10 @@ Discussion:
 - The Prob(JB) and Prob(H) still did not meet the 0.05 threshold, indicating that the residuals remained non-normally distributed and heteroskedastic.
 - However, the train and test RMSE were calculated to assess whether the model performance was still acceptable despite these issues: Train RMSE = 5.02, and
 Test RMSE = 4.20
-- The lower test RMSE compared to the train RMSE suggests that the model generalizes well to unseen data, indicating a good fit overall despite the unresolved JB and H diagnostics.
+- Comparable train and test RMSE values indicate stable generalization with no evidence of overfitting, despite the unresolved JB and H diagnostics.
 
 Graph plotting:
 - The plot displays the SARIMA(1, 1, 2)(0, 1, 1)[12] model's electricity consumption forecast from 1985 to 2023. The training data (red) captures the historical upward trend with clear seasonal patterns. The forecast (green) was first plotted alongside the test data (yellow) to evaluate model performance, before continuing to forecast beyond the test period into the future. The shaded confidence interval widens over time, reflecting increasing uncertainty further into the future.
 
 Key Insights:
-- While the SARIMA(1, 1, 2)(0, 1, 1)[12] model performed well in terms of RMSE, the Jarque-Bera ( prob(JB) ) and Heteroskedasticity ( prob(H) ) results indicated that the residuals were not normally distributed and the variance was not constant, suggesting the model could be further improved. Future work could explore additional transformations or alternative models to better handle these issues.
+- While the SARIMA(1, 1, 2)(0, 1, 1)[12] model performed well in terms of RMSE, the Jarque-Bera Test ( prob(JB) ) and the Heteroskedasticity Test ( prob(H) ) results indicated that the residuals were not normally distributed and the variance was not constant, suggesting the model could be further improved. Future work could explore additional transformations or alternative models to better handle these issues.
